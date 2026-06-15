@@ -179,7 +179,7 @@ docker exec -it mordisbot-db psql -U mordisbot -d mordisbot -c "SELECT * FROM es
 
 ## Tarea 2 - Implementar `cep-service`
 
-**Estado:** [ ] pendiente
+**Estado:** [x] hecha
 
 **Objetivo:** consumer CEP que detecta la regla "Tendencia detectada"
 (escalada, ver `02-ARQUITECTURA-POC.md`) y dispara la accion de
@@ -282,10 +282,13 @@ main().catch((err) => {
 
 **Criterios de aceptacion:**
 
-- [ ] Al correr el flujo completo, aparece EXACTAMENTE 1 fila en
+- [x] Al correr el flujo completo, aparece EXACTAMENTE 1 fila en
       `trends` para `sushi`/`Palermo`
-- [ ] En consola aparece `TENDENCIA DETECTADA: sushi/Palermo (6 en 60s)`
-- [ ] Ninguna otra combinacion (`pizza`/`Belgrano`, etc.) genera fila en
+- [x] En consola aparece `TENDENCIA DETECTADA: sushi/Palermo (5 en 60s)`
+      (la regla dispara al CRUZAR el umbral: `count >= THRESHOLD`, o sea
+      en el 5to evento; el `notified` evita re-disparos, por eso reporta
+      5 y no 6 - a diferencia de `esp_counts`, que cuenta todos y llega a 6)
+- [x] Ninguna otra combinacion (`pizza`/`Belgrano`, etc.) genera fila en
       `trends` (no llegan al umbral en `sample-events.json`)
 
 **Como probar:** igual que Tarea 1, agregando:
