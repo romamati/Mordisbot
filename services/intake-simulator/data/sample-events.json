@@ -1,0 +1,12 @@
+[
+  { "chat_id": 1001, "slots": { "cocina": "sushi", "zona": "Palermo" }, "confidence": 0.91, "delay_ms": 0 },
+  { "chat_id": 1002, "slots": { "cocina": "pizza", "zona": "Belgrano" }, "confidence": 0.88, "delay_ms": 2000 },
+  { "chat_id": 1003, "slots": { "cocina": "sushi", "zona": "Palermo" }, "confidence": 0.95, "delay_ms": 3000 },
+  { "chat_id": 1004, "slots": { "cocina": "parrilla", "zona": "Caballito" }, "confidence": 0.80, "delay_ms": 2000 },
+  { "chat_id": 1005, "slots": { "cocina": "sushi", "zona": "Palermo" }, "confidence": 0.93, "delay_ms": 4000 },
+  { "chat_id": 1006, "slots": { "cocina": "sushi", "zona": "Palermo" }, "confidence": 0.90, "delay_ms": 3000 },
+  { "chat_id": 1007, "slots": { "cocina": "pizza", "zona": "Belgrano" }, "confidence": 0.85, "delay_ms": 5000 },
+  { "chat_id": 1008, "slots": { "cocina": "sushi", "zona": "Palermo" }, "confidence": 0.89, "delay_ms": 4000 },
+  { "chat_id": 1009, "slots": { "cocina": "sushi", "zona": "Palermo" }, "confidence": 0.94, "delay_ms": 3000 },
+  { "chat_id": 1010, "slots": { "cocina": "vegetariana", "zona": "Almagro" }, "confidence": 0.78, "delay_ms": 5000 }
+]
