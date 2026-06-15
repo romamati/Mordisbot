@@ -300,7 +300,7 @@ docker exec -it mordisbot-db psql -U mordisbot -d mordisbot -c "SELECT * FROM tr
 
 ## Tarea 3 - Implementar `b2b-dashboard`
 
-**Estado:** [ ] pendiente
+**Estado:** [x] hecha
 
 **Objetivo:** mostrar las tendencias detectadas - el producto B2B de la
 idea original (ver `01-CONTEXTO-PROYECTO.md`, seccion 1).
@@ -395,9 +395,9 @@ app.listen(PORT, () => {
 
 **Criterios de aceptacion:**
 
-- [ ] `http://localhost:3000` responde 200 y muestra la tabla
-- [ ] Antes de correr el flujo, muestra "Sin tendencias todavia"
-- [ ] Despues de correr el flujo completo, aparece la fila
+- [x] `http://localhost:3000` responde 200 y muestra la tabla
+- [x] Antes de correr el flujo, muestra "Sin tendencias todavia"
+- [x] Despues de correr el flujo completo, aparece la fila
       `sushi | Palermo`
 
 **Como probar:**
