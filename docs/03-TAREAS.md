@@ -489,7 +489,7 @@ termina (exit 0) - es ESPERADO que `docker compose ps` lo muestre como
 
 ## Tarea 5 - Test end-to-end y completar README
 
-**Estado:** [ ] pendiente
+**Estado:** [x] hecha
 
 **Objetivo:** dejar evidencia real (no solo "esperado") de que el
 flujo funciona, y actualizar el checklist general.
@@ -512,9 +512,9 @@ flujo funciona, y actualizar el checklist general.
 
 **Criterios de aceptacion:**
 
-- [ ] `README.md` tiene evidencia real (logs/descripcion) del flujo
+- [x] `README.md` tiene evidencia real (logs/descripcion) del flujo
       funcionando
-- [ ] Checklist actualizado
+- [x] Checklist actualizado
 
 ---
 

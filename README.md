@@ -52,30 +52,36 @@ Ver `docs/poc-architecture.svg`.
 
 ## Como correr
 
+Requiere Docker corriendo. Primero crear el `.env` (gitignoreado) a
+partir del ejemplo:
+
 ```bash
 cp .env.example .env
-docker compose up -d
 ```
 
-Esto levanta:
-- **broker**: Redpanda en `localhost:19092`
-- **db**: Postgres en `localhost:5432` (con el esquema de `db/init.sql`
-  ya aplicado)
-
-A medida que se implementan los servicios propios, descomentar el
-bloque correspondiente en `docker-compose.yml` y correr
-`docker compose up -d --build` de nuevo.
-
-### intake-simulator (ya implementado)
+Levantar todo el stack (broker, db, esp-service, cep-service,
+b2b-dashboard):
 
 ```bash
-cd services/intake-simulator
-npm install
-KAFKA_BROKERS=localhost:19092 npm start
+docker compose up -d --build
 ```
 
-(o descomentar el servicio en `docker-compose.yml` para correrlo
-dentro de la red de docker, usando `KAFKA_BROKERS=broker:9092`)
+`intake-simulator` es un script que corre una vez y termina (aparece
+como `Exited (0)` en `docker compose ps`: es lo esperado). Para
+disparar la tanda de eventos de la demo en vivo:
+
+```bash
+docker compose run --rm intake-simulator
+```
+
+Abrir `http://localhost:3000` y ver el dashboard actualizarse en
+~25-30s. Para repetir la demo, volver a correr el `docker compose run`.
+
+> Debug fuera de docker: `intake-simulator` publica con
+> `KAFKA_BROKERS=localhost:19092 npm start` (desde
+> `services/intake-simulator`). Los servicios con DB (`esp/cep/b2b`)
+> esperan un Postgres en `localhost:5432`; dentro de la red de compose
+> usan `broker:9092` y `db:5432` via `.env`.
 
 ## Datos de prueba
 
@@ -85,28 +91,61 @@ de 30 segundos (suficiente para disparar la regla con el umbral
 default de 5 en 60s), mezclada con otras combinaciones que NO la
 disparan (para mostrar que la regla es selectiva).
 
-## Resultado esperado
+## Resultado verificado
 
-_(completar a medida que esp-service y cep-service esten listos)_
+Corrida real del flujo completo (`docker compose up -d --build` +
+`docker compose run --rm intake-simulator`) con
+`services/intake-simulator/data/sample-events.json`:
 
-Al correr `intake-simulator` con los datos de prueba:
+**`esp-service`** cuenta cada `(cocina, zona)` en la ventana deslizante;
+`sushi/Palermo` crece hasta 6 y el resto queda por debajo del umbral:
 
-1. `esp-service` debe loguear el conteo de `(sushi, Palermo)`
-   incrementando con cada evento.
-2. Al alcanzar el umbral dentro de la ventana, `cep-service` debe:
-   - insertar una fila en `trends` (Postgres)
-   - publicar un evento en `trend.detected`
-3. `b2b-dashboard` (`http://localhost:3000`) debe mostrar
-   `sushi / Palermo` en la lista de tendencias.
+```
+[esp-service] sushi/Palermo -> count=1 (ventana 60s)
+[esp-service] pizza/Belgrano -> count=1 (ventana 60s)
+[esp-service] sushi/Palermo -> count=2 (ventana 60s)
+[esp-service] parrilla/Caballito -> count=1 (ventana 60s)
+[esp-service] sushi/Palermo -> count=3 (ventana 60s)
+[esp-service] sushi/Palermo -> count=4 (ventana 60s)
+[esp-service] pizza/Belgrano -> count=2 (ventana 60s)
+[esp-service] sushi/Palermo -> count=5 (ventana 60s)
+[esp-service] sushi/Palermo -> count=6 (ventana 60s)
+[esp-service] vegetariana/Almagro -> count=1 (ventana 60s)
+```
+
+**`cep-service`** dispara al CRUZAR el umbral (5to evento), inserta en
+`trends` y publica en `trend.detected`:
+
+```
+[cep-service] TENDENCIA DETECTADA: sushi/Palermo (5 en 60s) -> trends + trend.detected {
+  cocina: 'sushi',
+  zona: 'Palermo',
+  count: 5,
+  window_seconds: 60,
+  ts: '2026-06-15T15:43:04.082Z'
+}
+```
+
+Reporta `count=5` (no 6) porque la regla salta en el instante del cruce
+del umbral y no vuelve a dispararse; `esp_counts`, en cambio, cuenta
+todos los eventos y llega a 6. Ninguna otra combinacion
+(`pizza/Belgrano`, etc.) supera el umbral, asi que no genera tendencia
+(la regla es selectiva).
+
+**`b2b-dashboard`** (`http://localhost:3000`): con `trends` vacio muestra
+"Sin tendencias todavia"; despues del flujo aparece la fila
+`sushi | Palermo | 5 | 60s` con su timestamp, y la pagina se autorefresca
+cada 5s.
 
 ## Checklist
 
 - [x] `docker compose up` levanta broker + db
 - [x] `intake-simulator` publica eventos de prueba
-- [ ] `esp-service` consume y agrega por (cocina, zona)
-- [ ] `cep-service` detecta el patron, INSERT en `trends` + publica `trend.detected`
-- [ ] `b2b-dashboard` muestra las tendencias
-- [ ] README completo (resultados reales, capturas)
+- [x] `esp-service` consume y agrega por (cocina, zona)
+- [x] `cep-service` detecta el patron, INSERT en `trends` + publica `trend.detected`
+- [x] `b2b-dashboard` muestra las tendencias
+- [x] Integracion completa en `docker-compose.yml` (flujo E2E verificado)
+- [x] README completo (resultados reales)
 - [ ] White paper (<= 5 paginas)
 - [ ] (Stretch) Deploy en la nube
 
