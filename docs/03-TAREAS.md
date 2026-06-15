@@ -414,7 +414,7 @@ Abrir `http://localhost:3000` antes y despues de correr
 
 ## Tarea 4 - Integrar todo en `docker-compose.yml`
 
-**Estado:** [ ] pendiente
+**Estado:** [x] hecha
 
 **Objetivo:** que `docker compose up -d --build` levante TODO (broker,
 db, esp-service, cep-service, b2b-dashboard) y que `intake-simulator`
@@ -475,15 +475,15 @@ termina (exit 0) - es ESPERADO que `docker compose ps` lo muestre como
 
 **Criterios de aceptacion:**
 
-- [ ] `docker compose up -d --build` levanta `broker`, `db`,
+- [x] `docker compose up -d --build` levanta `broker`, `db`,
       `esp-service`, `cep-service`, `b2b-dashboard` sin errores
-- [ ] `docker compose run --rm intake-simulator` corre y termina con
+- [x] `docker compose run --rm intake-simulator` corre y termina con
       exit code 0
-- [ ] `docker compose logs esp-service` muestra lineas
+- [x] `docker compose logs esp-service` muestra lineas
       `[esp-service] sushi/Palermo -> count=N` con N creciendo hasta 6
-- [ ] `docker compose logs cep-service` muestra la linea
+- [x] `docker compose logs cep-service` muestra la linea
       `TENDENCIA DETECTADA: sushi/Palermo`
-- [ ] `http://localhost:3000` muestra la fila `sushi | Palermo`
+- [x] `http://localhost:3000` muestra la fila `sushi | Palermo`
 
 ---
 
