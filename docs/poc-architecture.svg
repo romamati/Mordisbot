@@ -1,0 +1,64 @@
+<svg viewBox="0 0 1000 820" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555555"/>
+    </marker>
+  </defs>
+
+  <rect x="360" y="20" width="280" height="70" rx="8" fill="#d1e7dd" stroke="#4caf50" stroke-width="2"/>
+  <text x="500" y="48" text-anchor="middle" font-size="16" font-weight="bold" fill="#1b4332">intake-simulator</text>
+  <text x="500" y="68" text-anchor="middle" font-size="12" fill="#1b4332">simula busquedas (datos de prueba)</text>
+
+  <line x1="500" y1="90" x2="500" y2="150" stroke="#555555" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="510" y="125" font-size="12" fill="#333333">publica: user.intent.parsed</text>
+
+  <rect x="250" y="150" width="500" height="110" rx="8" fill="#ffe0b2" stroke="#fb8c00" stroke-width="2"/>
+  <text x="500" y="185" text-anchor="middle" font-size="16" font-weight="bold" fill="#8a5300">Broker pub-sub</text>
+  <text x="500" y="206" text-anchor="middle" font-size="12" fill="#8a5300">Redpanda (API Kafka)</text>
+  <text x="500" y="228" text-anchor="middle" font-size="12" fill="#8a5300">topics: user.intent.parsed - trend.detected</text>
+  <text x="500" y="248" text-anchor="middle" font-size="11" fill="#8a5300">at-least-once - orden por topic - retencion</text>
+
+  <line x1="400" y1="260" x2="280" y2="340" stroke="#555555" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="200" y="305" font-size="12" fill="#333333">consume (grupo: esp-group)</text>
+
+  <line x1="600" y1="260" x2="730" y2="340" stroke="#555555" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="650" y="305" font-size="12" fill="#333333">consume (grupo: cep-group)</text>
+
+  <rect x="90" y="340" width="300" height="80" rx="8" fill="#cfe2ff" stroke="#0d6efd" stroke-width="2"/>
+  <text x="240" y="372" text-anchor="middle" font-size="16" font-weight="bold" fill="#0a3a7a">esp-service</text>
+  <text x="240" y="392" text-anchor="middle" font-size="12" fill="#0a3a7a">ESP: conteo en ventana</text>
+  <text x="240" y="410" text-anchor="middle" font-size="12" fill="#0a3a7a">por (cocina, zona)</text>
+
+  <rect x="610" y="340" width="300" height="80" rx="8" fill="#ffd6cc" stroke="#e64a19" stroke-width="2"/>
+  <text x="760" y="372" text-anchor="middle" font-size="16" font-weight="bold" fill="#7a2400">cep-service</text>
+  <text x="760" y="392" text-anchor="middle" font-size="12" fill="#7a2400">CEP: regla "Tendencia</text>
+  <text x="760" y="410" text-anchor="middle" font-size="12" fill="#7a2400">detectada"</text>
+
+  <line x1="240" y1="420" x2="240" y2="490" stroke="#555555" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="250" y="460" font-size="12" fill="#333333">upsert conteo</text>
+
+  <line x1="760" y1="420" x2="760" y2="490" stroke="#555555" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="770" y="460" font-size="12" fill="#333333">INSERT trend</text>
+
+  <rect x="90" y="490" width="300" height="70" rx="8" fill="#e2d9f3" stroke="#6f42c1" stroke-width="2"/>
+  <text x="240" y="518" text-anchor="middle" font-size="14" font-weight="bold" fill="#3d1a78">Postgres</text>
+  <text x="240" y="538" text-anchor="middle" font-size="12" fill="#3d1a78">tabla esp_counts</text>
+
+  <rect x="610" y="490" width="300" height="70" rx="8" fill="#e2d9f3" stroke="#6f42c1" stroke-width="2"/>
+  <text x="760" y="518" text-anchor="middle" font-size="14" font-weight="bold" fill="#3d1a78">Postgres</text>
+  <text x="760" y="538" text-anchor="middle" font-size="12" fill="#3d1a78">tabla trends</text>
+
+  <path d="M 910 380 C 980 380, 980 260, 700 260" fill="none" stroke="#888888" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrow)"/>
+  <text x="855" y="245" font-size="11" fill="#555555">publica: trend.detected</text>
+  <text x="855" y="258" font-size="11" fill="#555555">(para futuros consumidores)</text>
+
+  <line x1="760" y1="560" x2="760" y2="640" stroke="#555555" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="770" y="605" font-size="12" fill="#333333">lee tendencias</text>
+
+  <rect x="610" y="640" width="300" height="80" rx="8" fill="#d1f2eb" stroke="#20c997" stroke-width="2"/>
+  <text x="760" y="672" text-anchor="middle" font-size="16" font-weight="bold" fill="#0d5c45">b2b-dashboard</text>
+  <text x="760" y="692" text-anchor="middle" font-size="12" fill="#0d5c45">producto: tendencias B2B</text>
+  <text x="760" y="710" text-anchor="middle" font-size="12" fill="#0d5c45">(2da fuente de ingresos)</text>
+
+  <text x="500" y="790" text-anchor="middle" font-size="13" fill="#666666">PoC - Mordisbot TPIF: "Tendencia detectada" sobre Kafka/Redpanda</text>
+</svg>
