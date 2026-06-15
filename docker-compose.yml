@@ -1,0 +1,81 @@
+# Punto de partida para el TPIF (Mordisbot).
+#
+# Dia 1: el unico objetivo es que esto levante con `docker compose up`.
+# Si algun flag de Redpanda no es valido en la version que baje Docker,
+# es un detalle menor de version - avisar para ajustarlo.
+#
+# broker  -> Redpanda, habla el protocolo/API de Kafka (topics, particiones,
+#            consumer groups, retencion) sin necesitar Zookeeper/KRaft a mano.
+# db      -> Postgres con extension pgvector (misma imagen que ya vienen
+#            usando para mantener consistencia con el resto del proyecto).
+#
+# Los servicios propios (intake-simulator, esp-service, cep-service,
+# b2b-dashboard) se van descomentando a medida que se implementan.
+
+services:
+  broker:
+    image: docker.redpanda.com/redpandadata/redpanda:latest
+    container_name: mordisbot-broker
+    command:
+      - redpanda
+      - start
+      - --kafka-addr
+      - internal://0.0.0.0:9092,external://0.0.0.0:19092
+      - --advertise-kafka-addr
+      - internal://broker:9092,external://localhost:19092
+      - --mode
+      - dev-container
+      - --smp
+      - "1"
+    ports:
+      - "19092:19092"
+
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: mordisbot-db
+    environment:
+      POSTGRES_USER: mordisbot
+      POSTGRES_PASSWORD: mordisbot
+      POSTGRES_DB: mordisbot
+    ports:
+      - "5432:5432"
+    volumes:
+      - mordisbot-db-data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  # --- Servicios propios: descomentar a medida que se van armando ---
+
+  # intake-simulator:
+  #   build: ./services/intake-simulator
+  #   container_name: mordisbot-intake-simulator
+  #   depends_on:
+  #     - broker
+  #   env_file: .env
+
+  # esp-service:
+  #   build: ./services/esp-service
+  #   container_name: mordisbot-esp-service
+  #   depends_on:
+  #     - broker
+  #     - db
+  #   env_file: .env
+
+  # cep-service:
+  #   build: ./services/cep-service
+  #   container_name: mordisbot-cep-service
+  #   depends_on:
+  #     - broker
+  #     - db
+  #   env_file: .env
+
+  # b2b-dashboard:
+  #   build: ./services/b2b-dashboard
+  #   container_name: mordisbot-b2b-dashboard
+  #   depends_on:
+  #     - db
+  #   ports:
+  #     - "3000:3000"
+  #   env_file: .env
+
+volumes:
+  mordisbot-db-data:
