@@ -7,6 +7,19 @@ const DATABASE_URL = process.env.DATABASE_URL || 'postgresql://mordisbot:mordisb
 const pool = new pg.Pool({ connectionString: DATABASE_URL });
 const app = express();
 
+// Endpoint JSON para consumir el producto B2B vía API (ej: Postman).
+// Devuelve las ultimas tendencias detectadas como JSON.
+app.get('/api/trends', async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      'SELECT cocina, zona, count, window_seconds, detected_at FROM trends ORDER BY detected_at DESC LIMIT 20'
+    );
+    res.json({ count: rows.length, trends: rows });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get('/', async (req, res) => {
   const { rows } = await pool.query(
     'SELECT cocina, zona, count, window_seconds, detected_at FROM trends ORDER BY detected_at DESC LIMIT 20'

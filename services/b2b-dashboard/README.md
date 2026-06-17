@@ -18,6 +18,13 @@ consumer de Kafka - mantiene la implementacion simple).
    solo cuando `cep-service` inserta una fila nueva.
 3. Puerto sugerido: `3000` (`DASHBOARD_PORT` en `.env`).
 
+## Endpoints
+
+- `GET /` — dashboard HTML (se refresca cada 5s).
+- `GET /api/trends` — mismas tendencias en JSON, para consumir el
+  producto B2B vía API (ej: Postman). Respuesta:
+  `{ "count": <n>, "trends": [ { cocina, zona, count, window_seconds, detected_at } ] }`.
+
 ```js
 import express from 'express';
 import pg from 'pg';
