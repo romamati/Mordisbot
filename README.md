@@ -83,6 +83,36 @@ Abrir `http://localhost:3000` y ver el dashboard actualizarse en
 > esperan un Postgres en `localhost:5432`; dentro de la red de compose
 > usan `broker:9092` y `db:5432` via `.env`.
 
+## Endpoints disponibles
+
+### Local (requiere `docker compose up -d --build`)
+
+| Endpoint | Descripción |
+|---|---|
+| `GET http://localhost:3000/` | Dashboard HTML — muestra tendencias con auto-refresh cada 5s |
+| `GET http://localhost:3000/api/trends` | Tendencias en JSON — para consumir el producto B2B vía Postman |
+| `GET http://localhost:3000/health` | Health check — confirma que el servicio está vivo |
+
+### Nube (Railway — siempre disponible)
+
+| Endpoint | Descripción |
+|---|---|
+| `GET https://mordisbot-production.up.railway.app/api/trends` | Tendencias en JSON con datos de ejemplo |
+| `GET https://mordisbot-production.up.railway.app/health` | Health check del servicio deployado |
+
+Respuesta de `/api/trends`:
+
+```json
+{
+  "count": 3,
+  "trends": [
+    { "cocina": "sushi",    "zona": "Palermo",   "count": 5, "window_seconds": 60, "detected_at": "..." },
+    { "cocina": "pizza",    "zona": "Belgrano",  "count": 3, "window_seconds": 60, "detected_at": "..." },
+    { "cocina": "parrilla", "zona": "Caballito", "count": 2, "window_seconds": 60, "detected_at": "..." }
+  ]
+}
+```
+
 ## Datos de prueba
 
 `services/intake-simulator/data/sample-events.json` incluye una tanda
