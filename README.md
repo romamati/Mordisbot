@@ -172,7 +172,7 @@ se demuestra localmente con `docker compose up` — ver sección "Como correr" a
 - [x] `b2b-dashboard` muestra las tendencias
 - [x] Integracion completa en `docker-compose.yml` (flujo E2E verificado)
 - [x] README completo (resultados reales)
-- [ ] White paper (<= 5 paginas)
+- [x] White paper — ver whitepaper/mordisbot-whitepaper-v4.pdf
 - [x] Deploy en Railway — https://mordisbot-production.up.railway.app/api/trends
 
 ## Stack
