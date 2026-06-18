@@ -1,7 +1,7 @@
 import express from 'express';
 import pg from 'pg';
 
-const PORT = Number(process.env.DASHBOARD_PORT || 3000);
+const PORT = process.env.PORT || process.env.DASHBOARD_PORT || 3000;
 const DATABASE_URL = process.env.DATABASE_URL || 'postgresql://mordisbot:mordisbot@localhost:5432/mordisbot';
 
 const pool = new pg.Pool({ connectionString: DATABASE_URL });
