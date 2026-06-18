@@ -137,6 +137,32 @@ todos los eventos y llega a 6. Ninguna otra combinacion
 `sushi | Palermo | 5 | 60s` con su timestamp, y la pagina se autorefresca
 cada 5s.
 
+## Deploy (Railway)
+
+El endpoint B2B está deployado en Railway con datos de ejemplo:
+
+```
+GET https://mordisbot-production.up.railway.app/api/trends
+```
+
+Respuesta esperada:
+
+```json
+{
+  "count": 3,
+  "trends": [
+    { "cocina": "sushi",    "zona": "Palermo",   "count": 6, "window_seconds": 60 },
+    { "cocina": "pizza",    "zona": "Belgrano",  "count": 3, "window_seconds": 60 },
+    { "cocina": "parrilla", "zona": "Caballito", "count": 2, "window_seconds": 60 }
+  ]
+}
+```
+
+El deploy muestra el producto B2B (endpoint de tendencias) con datos de ejemplo.
+
+El flujo completo con Kafka (intake-simulator → esp-service → cep-service → b2b-dashboard)
+se demuestra localmente con `docker compose up` — ver sección "Como correr" arriba.
+
 ## Checklist
 
 - [x] `docker compose up` levanta broker + db
@@ -146,8 +172,8 @@ cada 5s.
 - [x] `b2b-dashboard` muestra las tendencias
 - [x] Integracion completa en `docker-compose.yml` (flujo E2E verificado)
 - [x] README completo (resultados reales)
-- [ ] White paper (<= 5 paginas)
-- [ ] (Stretch) Deploy en la nube
+- [x] White paper — ver whitepaper/mordisbot-whitepaper-v4.pdf
+- [x] Deploy en Railway — https://mordisbot-production.up.railway.app/api/trends
 
 ## Stack
 

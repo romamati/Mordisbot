@@ -1,11 +1,14 @@
 import express from 'express';
 import pg from 'pg';
 
-const PORT = Number(process.env.DASHBOARD_PORT || 3000);
+const PORT = process.env.PORT || process.env.DASHBOARD_PORT || 3000;
 const DATABASE_URL = process.env.DATABASE_URL || 'postgresql://mordisbot:mordisbot@localhost:5432/mordisbot';
 
 const pool = new pg.Pool({ connectionString: DATABASE_URL });
 const app = express();
+
+// Healthcheck liviano para Railway: no toca la base de datos.
+app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
 // Endpoint JSON para consumir el producto B2B vía API (ej: Postman).
 // Devuelve las ultimas tendencias detectadas como JSON.
@@ -56,6 +59,6 @@ app.get('/', async (req, res) => {
 </html>`);
 });
 
-app.listen(PORT, () => {
-  console.log(`[b2b-dashboard] escuchando en http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`[b2b-dashboard] escuchando en http://0.0.0.0:${PORT}`);
 });
