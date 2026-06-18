@@ -137,6 +137,21 @@ todos los eventos y llega a 6. Ninguna otra combinacion
 `sushi | Palermo | 5 | 60s` con su timestamp, y la pagina se autorefresca
 cada 5s.
 
+## Deploy (Railway)
+
+El deploy en la nube usa `docker-compose.deploy.yml` (solo `db` +
+`b2b-dashboard`) y **expone unicamente el endpoint B2B con datos de
+ejemplo** precargados via `db/seed.sql`. No incluye Kafka ni el pipeline
+ESP/CEP: es una vidriera del producto B2B (`/api/trends` y la vista web)
+para poder mostrarlo sin levantar el broker.
+
+El **flujo completo con Kafka** (intake-simulator -> broker ->
+esp-service/cep-service -> b2b-dashboard, con deteccion de tendencia en
+vivo) se demuestra **localmente** con `docker compose up` usando el
+`docker-compose.yml` principal (ver seccion "Como correr").
+
+- URL del endpoint deployado: **[pendiente - completar tras el deploy]**
+
 ## Checklist
 
 - [x] `docker compose up` levanta broker + db
@@ -147,7 +162,7 @@ cada 5s.
 - [x] Integracion completa en `docker-compose.yml` (flujo E2E verificado)
 - [x] README completo (resultados reales)
 - [ ] White paper (<= 5 paginas)
-- [ ] (Stretch) Deploy en la nube
+- [ ] Deploy en Railway (en progreso — rama feature/deploy-railway)
 
 ## Stack
 
