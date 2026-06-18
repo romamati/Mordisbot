@@ -139,18 +139,29 @@ cada 5s.
 
 ## Deploy (Railway)
 
-El deploy en la nube usa `docker-compose.deploy.yml` (solo `db` +
-`b2b-dashboard`) y **expone unicamente el endpoint B2B con datos de
-ejemplo** precargados via `db/seed.sql`. No incluye Kafka ni el pipeline
-ESP/CEP: es una vidriera del producto B2B (`/api/trends` y la vista web)
-para poder mostrarlo sin levantar el broker.
+El endpoint B2B está deployado en Railway con datos de ejemplo:
 
-El **flujo completo con Kafka** (intake-simulator -> broker ->
-esp-service/cep-service -> b2b-dashboard, con deteccion de tendencia en
-vivo) se demuestra **localmente** con `docker compose up` usando el
-`docker-compose.yml` principal (ver seccion "Como correr").
+```
+GET https://mordisbot-production.up.railway.app/api/trends
+```
 
-- URL del endpoint deployado: **[pendiente - completar tras el deploy]**
+Respuesta esperada:
+
+```json
+{
+  "count": 3,
+  "trends": [
+    { "cocina": "sushi",    "zona": "Palermo",   "count": 6, "window_seconds": 60 },
+    { "cocina": "pizza",    "zona": "Belgrano",  "count": 3, "window_seconds": 60 },
+    { "cocina": "parrilla", "zona": "Caballito", "count": 2, "window_seconds": 60 }
+  ]
+}
+```
+
+El deploy muestra el producto B2B (endpoint de tendencias) con datos de ejemplo.
+
+El flujo completo con Kafka (intake-simulator → esp-service → cep-service → b2b-dashboard)
+se demuestra localmente con `docker compose up` — ver sección "Como correr" arriba.
 
 ## Checklist
 
@@ -162,7 +173,7 @@ vivo) se demuestra **localmente** con `docker compose up` usando el
 - [x] Integracion completa en `docker-compose.yml` (flujo E2E verificado)
 - [x] README completo (resultados reales)
 - [ ] White paper (<= 5 paginas)
-- [ ] Deploy en Railway (en progreso — rama feature/deploy-railway)
+- [x] Deploy en Railway — https://mordisbot-production.up.railway.app/api/trends
 
 ## Stack
 
